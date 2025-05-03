@@ -1,11 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { DEFAULT_CARDS } from '../default-cards';
+import { CardType } from '../types';
 import { Column } from './column';
 import { DeleteCard } from './delete-card';
 
 export const Board = () => {
-  const [cards, setCards] = useState(DEFAULT_CARDS);
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [hasChecked, setHasChecked] = useState(false);
+
+  useEffect(() => {
+    if (hasChecked) {
+      localStorage.setItem('cards', JSON.stringify(cards));
+    }
+  }, [cards, hasChecked]);
+
+  useEffect(() => {
+    const cardData = localStorage.getItem('cards');
+
+    setCards(cardData ? JSON.parse(cardData) : []);
+
+    setHasChecked(true);
+  }, []);
 
   return (
     <div className="flex h-full w-full gap-3 overflow-scroll p-12">
