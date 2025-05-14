@@ -5,22 +5,14 @@ import { Column } from './column';
 import { DeleteCard } from './delete-card';
 
 export const Board = () => {
-  const [cards, setCards] = useState<CardType[]>([]);
-  const [hasChecked, setHasChecked] = useState(false);
-
-  useEffect(() => {
-    if (hasChecked) {
-      localStorage.setItem('cards', JSON.stringify(cards));
-    }
-  }, [cards, hasChecked]);
-
-  useEffect(() => {
+  const [cards, setCards] = useState<CardType[]>(() => {
     const cardData = localStorage.getItem('cards');
+    return cardData ? JSON.parse(cardData) : [];
+  });
 
-    setCards(cardData ? JSON.parse(cardData) : []);
-
-    setHasChecked(true);
-  }, []);
+  useEffect(() => {
+    localStorage.setItem('cards', JSON.stringify(cards));
+  }, [cards]);
 
   return (
     <div className="flex h-full w-full gap-3 overflow-scroll p-12">
