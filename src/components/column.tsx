@@ -105,9 +105,7 @@ export const Column = ({
 
   const getIndicators = () => {
     return Array.from(
-      document.querySelectorAll(
-        `[data-column="${column}"]`
-      ) as unknown as HTMLElement[]
+      document.querySelectorAll<HTMLElement>(`[data-column="${column}"]`)
     );
   };
 
